@@ -1,0 +1,16 @@
+mongodb:
+  image: mongo
+  container_name: mongodb
+  net: "host"
+  ports:
+    - "27017:27017"
+  volumes:
+    - /opt/mongo_data:/data/db
+games_app:
+  build: .
+  container_name: gamesApp
+  net: "host"
+  ports:
+    - "3000:3000"
+  volumes:
+    - /vagrant/GamesMean:/app 

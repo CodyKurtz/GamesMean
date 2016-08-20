@@ -1,0 +1,13 @@
+<h1>Games</h1>
+
+<form ng-Submit="post()">
+	<input required type="text" placeholder="Game Name" ng-model="newGame.name" /> <br/><br/>
+	<input required type="text" placeholder="Platform" ng-model="newGame.platform" /> <br/><br/>
+	<input class="button" type="submit" value="Post" />
+</form>
+<div id="games-posted">
+	<h2>Games Library</h2>
+	<div ng-repeat="game in games | orderBy:'name':true">
+		<p>{{game.name}}  {{game.platform}}</p>
+	</div>
+</div>
