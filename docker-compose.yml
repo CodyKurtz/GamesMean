@@ -12,5 +12,3 @@ games_app:
   net: "host"
   ports:
     - "3000:3000"
-  volumes:
-    - /vagrant/GamesMean:/app 
