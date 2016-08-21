@@ -29,21 +29,47 @@ app.config(function($routeProvider){
 });
 
 app.factory('gameService', function($resource){
-	return $resource('/api/games');
+	return $resource('/api/games/:id', {id:'@id'},
+		{'update': {method:'PUT'}}
+);
 });
 
-app.controller("gameController", function($scope, gameService){
+app.controller("gameController", function($scope, $http, gameService){
 	$scope.games = [];
 	$scope.newGame = {name: '', platform: ''};
+	$scope.editMode = false;
 	
 	$scope.games = gameService.query();
 	
 	$scope.post = function(){
 		gameService.save($scope.newGame, function(){
-			$scope.games.push($scope.newGame);
+			$scope.games = gameService.query();
 			$scope.newGame = {name: '', platform:''};
 		});
 	}
+	
+	$scope.edit = function(game){
+		$scope.editMode = true;
+		$scope.newGame = gameService.get({id: game._id});
+	};
+	
+	$scope.update = function(){
+	gameService.update($scope.newGame, function(response){
+			$scope.games = gameService.query();
+			$scope.newGame = {name: '', platform:''};
+		});
+		$scope.editMode = false;
+	};
+	
+	$scope.del = function(game){
+		if(confirm('Are you sure you want to delete?'))
+		{
+			gameService.delete({id: game._id}, function(response){
+				$scope.games = gameService.query();
+				$scope.newGame = {name: '', platform:''};
+			});
+		}
+	};
 });
 
 app.controller('authController', function($scope,$http,$location,$rootScope){

@@ -1,13 +1,16 @@
 <h1>Games</h1>
 
-<form ng-Submit="post()">
+<form>
 	<input required type="text" placeholder="Game Name" ng-model="newGame.name" /> <br/><br/>
 	<input required type="text" placeholder="Platform" ng-model="newGame.platform" /> <br/><br/>
-	<input class="button" type="submit" value="Post" />
-</form>
-<div id="games-posted">
-	<h2>Games Library</h2>
-	<div ng-repeat="game in games | orderBy:'name':true">
-		<p>{{game.name}}  {{game.platform}}</p>
+	<input class="button" type="submit" value="Post" ng-click="post()" ng-hide="editMode" />
+	<input class="button" type="submit" value="Update" ng-click="update()" ng-show="editMode"/>
+	<div id="games-posted">
+		<h2>Games Library</h2>
+		<div ng-repeat="game in games | orderBy:'name':true">
+			<p>{{game.name}}  {{game.platform}}</p>
+			<input class="button" type="submit" value="Edit" ng-click="edit(game)"/>
+			<input class="button" type="submit" value="Delete" ng-click="del(game)"/>
+		</div>
 	</div>
-</div>
+</form>

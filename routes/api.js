@@ -14,7 +14,7 @@ router.get('/games', function(req, res, next) {
 });
 
 router.get('/games/:id', function(req, res, next) {
-   Game.findById (req.parms.id, function(err, game){
+Game.findOne ({_id: req.params.id}, function(err, game){
 	  if(err) {
 		  return res.send(err);
 	  }
@@ -33,5 +33,50 @@ router.post('/games', function(req, res, next) {
 	  return res.json(game);
   });
 });
+
+router.delete('/games/:id', function(req, res, next) {
+   Game.remove ({_id: req.params.id}, function(err, game){
+	  if(err) {
+		  return res.send(err);
+	  }
+	  res.json({message:'Successfully Deleted'});
+  });
+});
+
+router.put('/games', function(req, res, next) {
+    Game.findById(req.body._id, function (err, game) {
+        if (err) {
+            return res.send(err);
+        }
+        game.name = req.body.name;
+        game.platform = req.body.platform;
+        game.save(function(err){
+            if (err) {
+                return res.send(err);
+            }
+            res.json({message:'Game Updated'});
+        });
+    });
+});
+
+/* router.put('/games/:id', function(req, res, next) {
+	var newData = "{name: '"+ req.body.name+"' , platform: '"+req.body.platform+"'}";
+	console.log(newData);
+	Game.findOneAndUpdate({_id: req.params.id},newData, function (err, game) {
+	console.log(game);
+	if (err) {
+		console.log(err);
+		return res.send(err);
+	}
+	game.name = req.body.name;
+	game.platform = req.body.platform;
+	game.save(function(err){
+		if (err) {
+		return res.send(err);
+	}
+	res.json({message:'Game Updated'});
+	});
+ });
+}); */
 
 module.exports = router;
