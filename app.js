@@ -15,7 +15,7 @@ var app = express();
 require('./models/games');
 require('./models/users');
 
-mongoose.connect('mongodb://localhost/gamesDB', function(err) {
+mongoose.connect('mongodb://mongodb/gamesDB', function(err) {
   if(err) {
     console.log('connection error', err);
   } else {

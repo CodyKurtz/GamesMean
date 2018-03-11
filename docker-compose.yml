@@ -1,18 +1,25 @@
-mongodb:
-  image: mongo
-  container_name: mongodb
-  net: "host"
-  ports:
-    - "27017:27017"
-  volumes:
-    - /opt/mongo_data:/data/db
-games_app:
-  build: .
-  container_name: gamesApp
-  net: "host"
-  ports:
-    - "3000:3000"
-nginx:
-  build: ./nginx
-  container_name: nginx
-  net: "host"
+version: "2"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+  #  volumes:
+      #- ./data/:/data/db
+  games_app:
+    build: .
+    container_name: gamesApp
+    ports:
+      - "3000:3000"
+    depends_on:
+        - "mongodb"
+    links:
+        - mongodb
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    depends_on:
+        - "games_app"
+    links:
+        - games_app
+    ports:
+      - "80:8080"
